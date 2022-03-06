@@ -1,0 +1,9 @@
+// sequences for the game
+// - cuttoff, # keep playing, 3[] = triplet subdiv, 6[] = qn triplet
+
+#Name Test
+#Swing 1
+#Tempo 150
+#TimeSignature 4/4
+#Chords 1 G7 C7 F6/9 #
+#Melody 8 - Bb6 D7 F7 3[A7 Bb7 A7] # E7 3[G7 G#7 G7] F7 D7 6[Bb6 # C7 # C#7 D7] Eb7 # # F7 # # # #
