@@ -84,7 +84,9 @@ public class MidiPlayer {
 
             for(Note note : ms.melody) {
                 AddNote(note, track);
-                //System.out.println(note.note + ": " + note.start/8);
+            }
+            for(Note note : ms.chords) {
+                AddNote(note, track);
             }
 
             sequencer.setSequence(sequence);
@@ -100,7 +102,7 @@ public class MidiPlayer {
             }).start();
 
             //int[] fileTypes = MidiSystem.getMidiFileTypes(sequence);
-            
+
             //MidiSystem.write(sequence, fileTypes[0], new File("test.midi"));
         }
         catch (Exception ex) {

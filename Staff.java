@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class Staff {
     public final static int NOTE_WHOLE = 96;
     public final static int NOTE_HALF = NOTE_WHOLE / 2;
@@ -23,6 +25,25 @@ public class Staff {
     public final static int Bb = 10;
     public final static int B = 11;
 
+    public final static Chord[] chordTypes = {
+        new Chord("5",          "7"),
+        new Chord(",M",         "4,7"),
+        new Chord("-,m",        "3,7"),
+        new Chord("o,dim",      "3,6"),
+        new Chord("+,aug",      "4,8"),
+        new Chord("6",          "4,7,9"),
+        new Chord("m6,-6",      "3,7,9"),
+        new Chord("7",          "4,7,10"),
+        new Chord("M7,maj7",    "4,7,11"),
+        new Chord("m7,-7,mi7",  "3,7,10"),
+        new Chord("o7,dim7",    "3,6,9"),
+        new Chord("o/7,hd7",    "3,6,10"),
+        new Chord("9",          "4,7,10,14"),
+        new Chord("M9,maj9",    "4,7,11,14"),
+        new Chord("mi9,-9,m9",  "3,7,10,14"),
+        new Chord("6/9,69",     "4,7,9,14"),
+    };
+
     public static Note makeNote(int note, int start, int duration){
         return new Note(note, start, duration);
     }
@@ -37,17 +58,16 @@ public class Staff {
             subp * (sub == 2 ? NOTE_EIGHTH : (sub == 3 ? NOTE_ETRIPLET : (sub == 4 ? NOTE_SIXTEENTH : (sub == 6 ? NOTE_STRIPLET : 0))));
     }
 
-    public static int getNote(String notestring){
-        int numstart = 2;
+    static int[] extractNoteFromString(String string) {
         int offset = 0;
         int note = 0;
+        int length = 2;
 
-        char nchar = notestring.charAt(1);
-        if(nchar == 's' || nchar == '#') offset = 1;
-        else if (nchar == 'b') offset = -1;
-        else numstart = 1;
+        if(string.charAt(1) == 's' || string.charAt(1) == '#') offset = 1;
+        else if (string.charAt(1) == 'b') offset = -1;
+        else length = 1;
 
-        switch(notestring.charAt(0)){
+        switch(string.charAt(0)){
             case 'A': note = A; break;
             case 'B': note = B; break;
             case 'C': note = C; break;
@@ -56,7 +76,36 @@ public class Staff {
             case 'F': note = F; break;
             case 'G': note = G; break;
         }
-        return getNote(note + offset, Integer.parseInt(notestring.substring(numstart)));
+
+        return new int[]{note + offset, length};
+    }
+
+    public static int getNote(String notestring){
+        int[] note = extractNoteFromString(notestring);
+        return getNote(note[0], Integer.parseInt(notestring.substring(note[1])));
+    }
+
+    public static List<Note> getChord(String source, int start, int duration){
+        int[] noteReturn = extractNoteFromString(source);
+        String typestring = source.substring(noteReturn[1]);
+        
+        Chord type = null;
+        for (Chord chord : chordTypes) {
+            for(String s : chord.suffixes){
+                if(s.contentEquals(typestring)){
+                    type = chord;
+                }
+            }
+        }
+
+        int startingNote = getNote(noteReturn[0], 3);
+
+        List<Note> notes = new ArrayList<Note>();
+        for(int offset : type.offsets){
+            notes.add(new Note(startingNote + offset, start, duration));
+        }
+
+        return notes;
     }
 }
 
@@ -67,5 +116,18 @@ class Note {
         this.note = note;
         this.start = start;
         this.duration = duration;
+    }
+}
+
+class Chord {
+    public String[] suffixes;
+    public int[] offsets;
+
+    Chord(String cssuffixes, String csoffsets){
+        suffixes = cssuffixes.replace(" ", "").split(",");
+
+        String[] cso = csoffsets.replace(" ", "").split(",");
+        offsets = new int[cso.length];
+        for (int i = 0; i < cso.length; i++) offsets[i] = Integer.parseInt(cso[i]);
     }
 }

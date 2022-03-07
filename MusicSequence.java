@@ -69,6 +69,27 @@ public class MusicSequence {
         return notes;
     }
 
+    public List<Note> processChords(String chords, int subdiv){
+        List<Note> notes = new ArrayList<Note>();
+
+        int sdlength = Staff.NOTE_WHOLE / subdiv;
+        String[] tokens = chords.split(" ");
+        for(int i = 0; i < tokens.length; i++){
+            switch(tokens[i]){
+                case "-":
+                    break;
+                case "#": 
+                    for(Note o : notes) if(o.start == (i-1) * sdlength) o.duration += sdlength;
+                    break;
+                default:
+                    notes.addAll(Staff.getChord(tokens[i], i * sdlength, sdlength));
+                    break;
+            }
+        }
+
+        return notes;
+    }
+
     public void loadMusicSequence(String sequence){
         Scanner seqscanner = new Scanner(sequence);
 
@@ -89,6 +110,7 @@ public class MusicSequence {
                     timeDenominator = Integer.valueOf(times[1]);
                     break;
                 case "chords": 
+                    chords = processChords(line.substring(2 + tokens[0].length() + tokens[1].length()), Integer.valueOf(tokens[1]));
                     break;
                 case "melody":
                     melody = processMelody(line.substring(2 + tokens[0].length() + tokens[1].length()), Integer.valueOf(tokens[1]));
