@@ -18,8 +18,8 @@ public class MusicSequence {
         for(Note note : notes){
             int b = 0;
             for(Note note1 : melody){
-                if(note1.start == note.start){
-                    b = note.note == note.note ? 2 : 1;
+                if(note1.start == note.start) {
+                    b = note1.note == note.note ? 2 : 1;
                     break;
                 }
             }
@@ -29,7 +29,6 @@ public class MusicSequence {
     }
 
     List<Note> processMelody(String melody, int subdiv){
-        System.out.println("is swung: " + swing);
         List<Note> notes = new ArrayList<Note>();
 
         String [] tokens = melody.split(" (?![^\\[]*\\])");
@@ -44,7 +43,6 @@ public class MusicSequence {
                 default:
                     if(tokens[i].startsWith("3[") || tokens[i].startsWith("6[")){
                         Scanner sc = new Scanner(tokens[i].replaceAll("(((3|6)\\[)|\\])", ""));
-                        System.out.println(tokens[i].replaceAll("(((3|6)\\[)|\\])", ""));
                         boolean is3 = tokens[i].startsWith("3");
 
                         String str;
