@@ -34,7 +34,7 @@ public class Main{
 
         int rounds = 0;
         while(rounds < 6){
-            player.PlaySequence(ms);
+            player.PlaySequence(ms, true, true);
             String in = input.nextLine();
 
             List<Integer> matches = ms.CompareMelody(in);

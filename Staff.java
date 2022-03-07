@@ -98,9 +98,10 @@ public class Staff {
             }
         }
 
-        int startingNote = getNote(noteReturn[0], 3);
+        int startingNote = getNote(noteReturn[0], 4);
 
         List<Note> notes = new ArrayList<Note>();
+        notes.add(new Note(startingNote, start, duration));
         for(int offset : type.offsets){
             notes.add(new Note(startingNote + offset, start, duration));
         }
