@@ -1,4 +1,6 @@
 // Java program showing how to change the instrument type
+import java.io.File;
+
 import javax.sound.midi.*;
 
 public class MidiPlayer {
@@ -80,10 +82,9 @@ public class MidiPlayer {
 
             track.add(makeEvent(192, 1, 0, 0, 0));
 
-
             for(Note note : ms.melody) {
                 AddNote(note, track);
-                System.out.println(note.note + ": " + note.start/8);
+                //System.out.println(note.note + ": " + note.start/8);
             }
 
             sequencer.setSequence(sequence);
@@ -97,6 +98,10 @@ public class MidiPlayer {
                     }
                 }
             }).start();
+
+            //int[] fileTypes = MidiSystem.getMidiFileTypes(sequence);
+            
+            //MidiSystem.write(sequence, fileTypes[0], new File("test.midi"));
         }
         catch (Exception ex) {
             ex.printStackTrace();
