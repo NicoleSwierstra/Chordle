@@ -1,6 +1,5 @@
 // Java program showing how to change the instrument type
 import java.io.File;
-
 import javax.sound.midi.*;
 
 public class MidiPlayer {    

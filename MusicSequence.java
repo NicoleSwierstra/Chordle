@@ -9,8 +9,18 @@ import java.util.Scanner;
 public class MusicSequence {
     public int tempo, timeNumerator, timeDenominator;
     public boolean swing = true;
-
+    public int lengthM;
+    
     public List<Note> melody, chords;
+
+    MusicSequence(MusicSequence base){
+        tempo = base.tempo;
+        swing = base.swing;
+        timeDenominator = base.timeDenominator;
+        timeNumerator = base.timeNumerator;
+        lengthM = base.lengthM;
+        chords = base.chords;
+    };
 
     List<Integer> CompareMelody(String compararor) {
         List<Note> notes = processMelody(compararor, 8);
@@ -74,6 +84,7 @@ public class MusicSequence {
 
         int sdlength = Staff.NOTE_WHOLE / subdiv;
         String[] tokens = chords.split(" ");
+        lengthM = tokens.length;
         for(int i = 0; i < tokens.length; i++){
             switch(tokens[i]){
                 case "-":
